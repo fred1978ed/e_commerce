@@ -1,9 +1,8 @@
 vich_uploader:
   db_driver: orm
-
   mappings:
-    produit_image:
-      uri_prefix: /image/produit
-      upload_destination: "%kernel.project_dir%/public/image/produit"
+    produit_images:
+      uri_prefix: /images/produit
+      upload_destination: "%kernel.project_dir%/public/images/produit"
       namer: Vich\UploaderBundle\Naming\UniqidNamer
       # Le namer est la classe que nous allons utiliser pour donner un nom unique à nos fichiers uploadés

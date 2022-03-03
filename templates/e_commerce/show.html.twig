@@ -4,17 +4,21 @@
 
 {% block body %}
 
-<section class="row produit">
+<pre>
+    {{ dump(produit) }}
+</pre>
+
+ <section class="row produit">
 
 
     <article class="col-md-6 mx-auto text-center border border-dark my-3 p-3 mr-1">
-        <h2>{{ produit.title }}</h2>
-        <div class="metadata">Ecrit le {{produit.createdAt|date("d/m/Y à H:i:s") }} dans la catégorie
-            {{ produit.category.title }}</div>
+        <h2>{{ produit.nom }}</h2>
+        <div class="metadata">dans la catégorie
+            {{ produit.categorie.titre }}</div>
         <hr>
         <div class="content">
-            <img src="{{ asset('images/articles/' ~ produit.image) }}" alt="" class="img-fluid">
-            {{ produit.content|raw }}
+            <img src="{{ asset('images/produit/' ~ produit.image) }}" alt="" class="img-fluid">
+            {# {{ produit.content|raw }} #}
         </div>
     </article>
 </section>
@@ -23,15 +27,15 @@
 
 <section class="col-md-10 mx-auto">
 
-    {% for comment in produit.comments %}
+    {% for commentaire in produit.commentaires %}
     <div class="comment">
         <div class="row">
             <div class="col-md-3">
-                {{produit.author.nom}} {{produit.author.username}}
+                {{produit.auteur.nom}} {{produit.auteur.username}}
                 (<small>{{ comment.createdAt|date("d/m/Y à H:i:s") }}</small> )
             </div>
             <div class="col-md-9">
-                {{comment.content|raw}}
+                {{commentaire.content|raw}}
             </div>
         </div>
     </div>
@@ -41,20 +45,20 @@
 
 </section>
 
-{% if app.user %}
-<section class="col-md-10 mx-auto my-3">
+ {% if app.user %}
+{# <section class="col-md-10 mx-auto my-3">
 
-    {{ form_start(formComment) }}
+    {{ form_start(formCommentaire) }}
 
-    {{ form_row(formComment.content, {
+    {{ form_row(formCommentaire.content, {
     label : "Nouveau commentaire"
 }) }}
 
     <button type="submit" class="btn btn-info my-2">Valider le commentaire</button>
 
-    {{ form_end(formComment) }}
+    {{ form_end(formCommentaire) }}
 
-</section>
+</section> #}
 {% else %}
 <p> Vous ne pouvez pas poster de commentaires, <a href="{{path('app_login')}}">connectez-vous</a> !</p>
 {% endif %}

@@ -2,12 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
+use App\Entity\User;
+use App\Entity\Categorie;
+use App\Entity\Commentaire;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+/**
+ *  @Vich\Uploadable
+ */
 class Produit
 {
     #[ORM\Id]
@@ -37,6 +47,11 @@ class Produit
 
     #[ORM\Column(type: 'string', length: 255)]
     private $image;
+    /**
+    * @Vich\UploadableField(mapping="produit_images", fileNameProperty="image")
+    */
+    private $imageFile;
+
 
     public function __construct()
     {
@@ -143,9 +158,27 @@ class Produit
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(?string $image): self
     {
         $this->image = $image;
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile = null): self
+    {
+        $this->imageFile = $imageFile;
+
+        // si on ajoute une image au produit alors 
+        if($this->imageFile instanceof UploadedFile)
+        {
+            // on met à jour sa date de mise à jour
+            $this->updateAt = new \DateTime();
+        }
 
         return $this;
     }

@@ -31,47 +31,70 @@ class ECommerceController extends AbstractController
     }
 
     #[Route('/profil', name: 'app_profil')]
-    public function profil(Request $request, EntityManagerInterface $manager,ProduitRepository $repo): Response
+    public function profil( EntityManagerInterface $manager,ProduitRepository $repo): Response
     {
-        $produit = new Produit;
-         $form = $this->createForm(ProduitType::class, $produit);
-         $form->handleRequest($request);
+       
+        if($this->getUser())  //si l'utilisateur est connecté
+        {
+            $colonnes= $manager->getClassMetadata(Produit::class)->getFieldNames();
 
-         if($form->isSubmitted() && $form->isValid())
-         {
-            $manager->persist($produit);
-            $manager->flush();
-         }
+            $produit = $repo->getProduitByUser($this->getUser()); // on récupère toute les données de l'utilisateur qui est connecté
+            if(!$produit)
+            {
+                $this->addFlash('info',"Vous n'avez pas de produits");
+            }
+            return $this->render("e_commerce/profil.html.twig", array(
+                'produits' => $produit,
+                'colonnes' => $colonnes
+            ));
+        }
+        else 
+        {
+            return $this->redirectToRoute('app_e_commerce'); // bien mettre la route
+        }
 
-
-        $produit = $repo->findAll();
-        return $this->render('e_commerce/profil.html.twig', [
-            'produit' => $produit
-        ]);
-
-        return $this->render('e_commerce/profil.html.twig');
     }
 
-    // #[Route('/show/{id}', name: 'app_show')]
-    // public function show(Produit $produit,Request $request,EntityManagerInterface $manager)
-    // {
-    //     $produit = new Produit();
+   
+    #[Route('/new', name: 'app_new')]
+    #[Route('/edit', name: 'app_edit')]
 
-    //     if($form->isSubmitted() && $form->isValid())
-    //     {
-    //         $manager->persist($produit);
-    //         $manager->flush();
+      public function form(Request $request, EntityManagerInterface $manager, Produit $produit = null)
+      {
+          if(!$produit)
+          {
+              $produit = new Produit;
+              $produit->setAuteur($this->getUser());
 
-    //         return $this->redirectToRoute('show', array(
-    //             'id' => $produit->getId()
-    //         ));
-    //     }
+          }
+  
+          $form = $this->createForm(ProduitType::class, $produit);
+          $form->handleRequest($request);
+  
+          if($form->isSubmitted() && $form->isValid())
+          {
+              $manager->persist($produit);
+              $manager->flush();
+  
+              return $this->redirectToRoute('app_profil', array(
+                  'id' => $produit->getId()
+              ));
+          }
+  
+          return $this->render("e_commerce/form.html.twig", array(
+              'formProduit' => $form->createView(),
+              'editMode' => $produit->getId() !== NULL
+          ));
+      }
 
-    //     return $this->render("e_commerce/show.html.twig", array(
-    //         'produit' => $produit,
-    //         'formProduit' => $form->createView()
-    //     ));
-    // }
+      #[Route('/show/{id}', name:'app_show')]
+    public function show(Produit $produit, ProduitRepository $repo)
+    {
+        return $this->render("e_commerce/show.html.twig", [
+            'produit' => $produit
+        ]);
+    }
+  
 
 
     

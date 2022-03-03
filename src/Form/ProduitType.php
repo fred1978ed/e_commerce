@@ -18,10 +18,10 @@ class ProduitType extends AbstractType
             ->add('nom')
             ->add('description')
             ->add('prix')
-            ->add('image', FileType::class, ['required' => false])
+            ->add('imageFile', FileType::class, ['required' => false])
             ->add('categorie' , EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'title'
+                'choice_label' => 'titre'
             ]
             );
         ;
@@ -30,6 +30,9 @@ class ProduitType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'attr' => [
+                'novalidate' => 'novalidate'
+            ],
             'data_class' => Produit::class,
         ]);
     }
