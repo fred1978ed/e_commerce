@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit{{produit.id}}{% endblock %}
+
+{% block body %}
+
+<section class="row produit">
+
+
+    <article class="col-md-6 mx-auto text-center border border-dark my-3 p-3 mr-1">
+        <h2>{{ produit.title }}</h2>
+        <div class="metadata">Ecrit le {{produit.createdAt|date("d/m/Y à H:i:s") }} dans la catégorie
+            {{ produit.category.title }}</div>
+        <hr>
+        <div class="content">
+            <img src="{{ asset('images/articles/' ~ produit.image) }}" alt="" class="img-fluid">
+            {{ produit.content|raw }}
+        </div>
+    </article>
+</section>
+
+<h2 class="text-center mx-auto m-3">Commentaires</h2>
+
+<section class="col-md-10 mx-auto">
+
+    {% for comment in produit.comments %}
+    <div class="comment">
+        <div class="row">
+            <div class="col-md-3">
+                {{produit.author.nom}} {{produit.author.username}}
+                (<small>{{ comment.createdAt|date("d/m/Y à H:i:s") }}</small> )
+            </div>
+            <div class="col-md-9">
+                {{comment.content|raw}}
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    {% endfor %}
+
+</section>
+
+{% if app.user %}
+<section class="col-md-10 mx-auto my-3">
+
+    {{ form_start(formComment) }}
+
+    {{ form_row(formComment.content, {
+    label : "Nouveau commentaire"
+}) }}
+
+    <button type="submit" class="btn btn-info my-2">Valider le commentaire</button>
+
+    {{ form_end(formComment) }}
+
+</section>
+{% else %}
+<p> Vous ne pouvez pas poster de commentaires, <a href="{{path('app_login')}}">connectez-vous</a> !</p>
+{% endif %}
+
+{% endblock %}
