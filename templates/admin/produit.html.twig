@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<table class="table table-bordered text-center">
+ <tr>
+ {% for produit in colonnes %}
+ {% if produit != 'id' %}
+ <th>{{ produit }}</th>
+ {% endif %}
+ {% endfor %}
+ 
+ <th>categorie</th>
+ <th>auteur</th>
+ <th>supp</th>
+ <th>editer</th>
+
+ </tr>
+ {% for key, produit in Produits %}
+ <tr>
+ <td>{{ produit.nom }}</td>
+ <td>{{ produit.description|raw }}</td>
+ <td>{{ produit.prix }}</td>
+<td><img class="img-thumbnail" style="max-height: 100px; max-width: 100px;" src="{{ asset('images/produit/' ~ produit.image ) }}" alt="" class="col-md-12"></td>
+ <td>{{ produit.categorie.titre }}</td>
+ <td>{{ produit.auteur.username }}</td>
+ <td><a href="{{ path('admin_delete_produit', {id: produit.id} )}}"class="btn btn-danger "><i class="fas fa-trash-alt"></i></a></td>
+  <td><a href="{{ path('admin_edit_produit', {id: produit.id} )}}"class="btn btn-warning "><i class="fas fa-trash-alt"></i></a></td>
+
+
+ </tr>
+ {% endfor %}
+
+ </table>
+ {% endblock %}

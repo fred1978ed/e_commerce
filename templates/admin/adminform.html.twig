@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+Formulaire
+{% endblock %}
+
+
+{% block body %}
+
+<h1>
+    {% if editMode %}
+    Modification du produit
+    {% else %}
+    Création du produit
+    {% endif %}
+</h1>
+
+{{form_start(formAdminProduit)}}
+
+{{form_row(formAdminProduit.nom, {
+    label : "Nom",
+    attr : {
+        placeholder : "Nom du produit"
+    }
+})}}
+{{form_row(formAdminProduit.description, {
+    label : "Description",
+    attr : {
+        placeholder : "description du produit"
+    }
+})}}
+{{form_row(formAdminProduit.prix, {
+    label : "Prix",
+    attr : {
+        placeholder : "Prix du produit"
+    }
+})}}
+{{form_row(formAdminProduit.imageFile)}}
+
+{{form_row(formAdminProduit.categorie, {
+    label : "Catégorie"
+})}}
+{{form_row(formAdminProduit.auteur, {
+    label : "Catégorie"
+})}}
+
+<button type="submit" class="btn btn-info mt-2">
+{% if editMode %}
+    Enregistrer les modifications
+{% else %}
+    Créer un nouveau produit
+{% endif %}
+</button>
+
+
+{{form_end(formAdminProduit)}}
+
+
+{% endblock %}

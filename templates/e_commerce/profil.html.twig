@@ -9,20 +9,40 @@
 <h2 class="text-center m-3 mx-auto">Page profil</h2>
 <p class="text-center m-3 mx-auto text-danger">N'hésitez pas à acheter et de vendre des produit</p>
 
+
 <p>voila vos produits</p>
-<pre>
+{# <pre>
     {{ dump(colonnes) }}
-</pre>
-{% for produit in produits %}
+</pre> #}
+<table class="table">
+    <thead>
+        <tr>
+            {% for colonne in colonnes %}
+                <th>{{ colonne|capitalize }}</th>
+            {% endfor %}
+                <th>lien</th>      
+        </tr>
+    </thead>
 
-    <div class="row">
-        {# <div class="col-md-3">créer le :{{new.createdAt|date("d/m/Y à H:i:s")}}</div> #}
-        <div class="col-md-9 d-flex justify-content-between"> : {{produit.nom|raw}} 
-        <div class="col-md-3">catégorie :{{produit.categorie.titre}}</div>
-        <a href="{{path('app_show', {'id' : produit.id})}}" class="text-decoration-none">Lire la suite</a></div>
+        <tbody>
 
-    </div>
-{% endfor %}
+            {% for produit in produits %}
+
+               <tr> 
+                   <td>{{produit.id}}</td>
+                   <td>{{produit.nom}}</td>
+                   <td>{{produit.description}}</td>
+                   <td>{{produit.prix}}€</td>
+                   <td><img class="img-thumbnail" style="max-height: 100px; max-width: 100px;" src="{{ asset('images/produit/' ~ produit.image ) }}" alt="" class="col-md-12"></td>
+                   <td><a href="{{path('app_show', {'id' : produit.id})}}" class="text-decoration-none">Lire la suite</a></td>
+
+                    
+                </tr>
+        
+                {% endfor %}
+
+        </tbody>
+</table>
 
 
 

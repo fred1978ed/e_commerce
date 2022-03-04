@@ -22,6 +22,9 @@ class CommentaireType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'attr' => [
+                'novalidate' => 'novalidate'
+            ],
             'data_class' => Commentaire::class,
         ]);
     }

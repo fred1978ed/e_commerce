@@ -4,9 +4,9 @@
 
 {% block body %}
 
-<pre>
+{# <pre>
     {{ dump(produit) }}
-</pre>
+</pre> #}
 
  <section class="row produit">
 
@@ -45,22 +45,35 @@
 
 </section>
 
- {% if app.user %}
-{# <section class="col-md-10 mx-auto my-3">
+
+ {# {% if app.User %}
+ <section class="col-md-10 mx-auto my-3">
 
     {{ form_start(formCommentaire) }}
 
-    {{ form_row(formCommentaire.content, {
-    label : "Nouveau commentaire"
+    {{ form_row(formCommentaire.contenu, {
+    label : "descrption"
+}) }}
+
+{{ form_row(formCommentaire.createdAt, {
+    label : "ecrit le :"
+}) }}
+
+{{ form_row(formCommentaire.auteur, {
+    label : "ecrit par :"
+}) }}
+
+{{ form_row(formCommentaire.produit, {
+    label : "le produit est :"
 }) }}
 
     <button type="submit" class="btn btn-info my-2">Valider le commentaire</button>
 
-    {{ form_end(formCommentaire) }}
+    {{ form_end(formCommentaire) }} #}
 
-</section> #}
+{# </section> 
 {% else %}
 <p> Vous ne pouvez pas poster de commentaires, <a href="{{path('app_login')}}">connectez-vous</a> !</p>
-{% endif %}
+{% endif %} #}
 
 {% endblock %}

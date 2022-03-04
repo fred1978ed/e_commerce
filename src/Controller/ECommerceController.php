@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use PhpParser\Comment;
+use App\Entity\Commentaire;
 use App\Entity\Contact;
 use App\Entity\Produit;
 use App\Form\ContactType;
@@ -17,10 +17,10 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\html;
 
 class ECommerceController extends AbstractController
 {
-    #[Route('/e/commerce', name: 'app_e_commerce')]
+    #[Route('/e_commerce', name: 'app_e_commerce')]
     public function index(): Response
     {
-        return $this->render('index.html.twig');
+        return $this->render('e_commerce/index.html.twig');
     
     }
 
@@ -88,12 +88,15 @@ class ECommerceController extends AbstractController
       }
 
       #[Route('/show/{id}', name:'app_show')]
-    public function show(Produit $produit, ProduitRepository $repo)
+    public function show(Produit $produit, ProduitRepository $repo, Request $request, EntityManagerInterface $manager, Commentaire $commentaire = null)
     {
         return $this->render("e_commerce/show.html.twig", [
             'produit' => $produit
         ]);
+
+        
     }
+    
   
 
 
